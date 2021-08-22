@@ -87,4 +87,4 @@ render(){
 }
 
 const {getAllCharacters} = new gotService();
-export default withData(ItemList,getAllCharacters); //этот компонент итемЛист подставится вместо View при вызове функции
+export default withData(ItemList,getAllCharacters); //этот компонент итемЛист подста

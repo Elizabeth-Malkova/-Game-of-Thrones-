@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {Component} from 'react';
 import './charDetails.css';
 import Spinner from '../spinner';
 import ErrorMessage from '../errorMessage';
@@ -16,50 +16,63 @@ export{
     Field
 }
 
-export default function CharDetails ({itemId, getData, children}) {
+export default class CharDetails extends Component {
 
-    const[item,setItem] = useState(null);
-    const[loading,onItemDetailsLoaded] = useState(true);
-    const[error,onError] = useState(false);
-
-    
-useEffect(()=>{
-    console.log(itemId, item)
-    
-    if(!item || item.id !== itemId){
-        updateItem();
+    state = {
+        item: null,
+        loadind:true,
+        error:false
     }
-})
+    
+    componentDidMount(){
+        this.updateItem();
+    };
+    componentDidUpdate(prevProps){
+        if(this.props.itemId !== prevProps.itemId){
+            this.updateItem();
+        }
+    };
+    onItemDetailsLoaded = (item) => {
+        this.setState({
+            item,
+            loading: false
+        })
+    };
 
-
-
-const updateItem=()=>{
-    console.log('update', itemId)
+    updateItem(){
+    const {getData} = this.props;
+    const {itemId} = this.props;
     if(!itemId){
         return;
     }
-    
-        onItemDetailsLoaded(true);
-    
-        getData(itemId)
-        .then((item)=>{
-            setItem(item)
-            onItemDetailsLoaded(false)
-        })
-        .catch( () => onError(true))
+    this.setState({
+        loading: true
+    })
+    getData(itemId)
+    .then( this.onItemDetailsLoaded )
+    .catch( () => this.onError())
 }
 
+onError(){
+this.setState({
+    item: null,
+    error: true
+})
 
+        //this.foo.bar=0; 
+}
+    render() {
+       
 
-       if (!item && error) {
+        if (!this.state.item && this.state.error) {
             return <ErrorMessage/>
-        } else if (!item) {
+        } else if (!this.state.item) {
             return <span className="select-error">Please make your choice</span>
         }
-
+        const {item} = this.state;
         const {name} = item;
 
-        if (loading) {
+        if (this.state.loading) {
             return (
                 <div className="char-details rounded">
                     <Spinner/>
@@ -73,7 +86,7 @@ const updateItem=()=>{
                 <h4>{name}</h4>
                 <ul className="list-group list-group-flush">
                    {
-                       React.Children.map(children, (child) => {
+                       React.Children.map(this.props.children, (child) => {
                         return React.cloneElement(child,{item})
                        })
                    }
@@ -81,5 +94,5 @@ const updateItem=()=>{
             </div>
             </>
         );
-    
+    }
 }
