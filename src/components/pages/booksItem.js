@@ -12,8 +12,6 @@ export default class BooksItem extends Component{
     <Field field = 'numberOfPages' label='NumberOfPages'/>
     <Field field = 'released' label='Released'/>
         </CharDetails>
-        )
-
-        
+        )     
     }
 }

@@ -7,6 +7,8 @@ import gotService from '../services/gotService';
 import {BrowserRouter as Router,Route} from 'react-router-dom';
 import {CharacterPage,BooksPage,HousesPage,BooksItem} from '../pages'
 
+import './app.css';
+
 
 export default class App extends Component {
 
@@ -61,8 +63,7 @@ export default class App extends Component {
             
     return (
         <Router>
-            <div className = "app"/>
-            <>
+            <div className = "app">
             <Container>
                 <Header />
             </Container>
@@ -85,7 +86,7 @@ export default class App extends Component {
                     }
                 }/>
             </Container>
-        </>
+        </div>
         </Router>
     )
 };

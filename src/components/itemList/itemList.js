@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import './itemList.css';
 import Spinner from '../spinner';
 import ErrorMessage from '../errorMessage';
-import PropTypes from 'prop-types';
-import { render } from 'react-dom';
 import gotService from '../services/gotService';
 
 class ItemList extends Component {
@@ -16,8 +14,6 @@ class ItemList extends Component {
     static protoTypes = {
         onItemSelected: PropTypes.func
     }*/
-
-  
 
 renderItems(arr){
 return arr.map((item)=>{
