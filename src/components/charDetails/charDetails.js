@@ -23,30 +23,30 @@ export default function CharDetails ({itemId, getData, children}) {
     const[error,onError] = useState(false);
 
     
-useEffect(()=>{
-    console.log(itemId, item)
-    
-    if(!item || item.id !== itemId){
-        updateItem();
+    useEffect(()=>{
+        console.log(itemId, item)
+        
+        if(!item || item.id !== itemId){
+            updateItem();
+        }
+    })
+
+
+
+    const updateItem=()=>{
+        console.log('update', itemId)
+        if(!itemId){
+            return;
     }
-})
-
-
-
-const updateItem=()=>{
-    console.log('update', itemId)
-    if(!itemId){
-        return;
-    }
     
-        onItemDetailsLoaded(true);
-    
-        getData(itemId)
-        .then((item)=>{
-            setItem(item)
-            onItemDetailsLoaded(false)
-        })
-        .catch( () => onError(true))
+    onItemDetailsLoaded(true);
+
+    getData(itemId)
+    .then((item)=>{
+        setItem(item)
+        onItemDetailsLoaded(false)
+    })
+    .catch( () => onError(true))
 }
 
 

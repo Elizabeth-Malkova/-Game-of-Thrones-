@@ -54,6 +54,7 @@ return class extends Component{
         data:null,
         error:false
     };
+    
     componentDidMount(){
 //функция гетдата приходит из аргумента функции , а входит туда из верхнего уровня
 

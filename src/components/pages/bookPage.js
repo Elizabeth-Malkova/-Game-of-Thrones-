@@ -37,7 +37,7 @@ import {withRouter} from 'react-router-dom'
 
             } 
             getData = {this.gotService.getAllBooks}
-            renderItem = {({name,publisher}) => `${name}(${publisher})`}/>
+            renderItem = {({name,publisher}) => { console.log(name, publisher); return `${name}(${publisher})`}}/>
         )}
 }
 export default withRouter(BooksPage);

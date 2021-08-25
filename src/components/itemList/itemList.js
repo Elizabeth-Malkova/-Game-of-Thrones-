@@ -1,86 +1,64 @@
-import React, {Component} from 'react';
+import React, {useState,useEffect} from 'react';
 import './itemList.css';
 import Spinner from '../spinner';
 import ErrorMessage from '../errorMessage';
-import gotService from '../services/gotService';
 
-class ItemList extends Component {
 
-   
-    /*static defaultProps = {
-        onItemSelected: () =>{}
-    }
-    
-    static protoTypes = {
-        onItemSelected: PropTypes.func
-    }*/
+function ItemList({getData,onItemSelected,renderItem}) {
 
-renderItems(arr){
-return arr.map((item)=>{
-    const {id} = item;
-    const label = this.props.renderItem(item);
-    return(
+    const[itemList, updateList]=useState([])
+
+    useEffect(()=>{
+        getData()
+        .then((data)=>{
+            updateList(data)// при помощи этой функции мы будем изменять наш стейт,который лежит в itemList 
+        })
+        },[])//второй агрумент юзеффекта(итемлист) гласит,что если наш итемлист не изменился,то мы ничего делать не будем,но этот способ сработает,если в этом состоянии примитив(число,строка или булен)
+//а если вторым аргументом предать пустой масив, это скажет хуку,что еффект нужно выполнить только при появлении компонента и его изчезновении
+    function renderItems (arr) {
+        return arr.map((item)=>{
+            const {id} = item;
+            const label = renderItem(item);
+            return(
                 <li 
                 key={id}
                 className="list-group-item"
-                onClick={ () => this.props.onItemSelected(id)}>
+                onClick={ () => onItemSelected(id)}>
                 {label}
                 </li>
-    )
-})
- }
-
-    render(){
-        const {data}=this.props
-        const items = this.renderItems(data);
-        return (
-            <ul className="item-list list-group">
-                {items}
-            </ul>
-        );
+            )
+        })
     }
-}
+
+
+    /*const {data} = props
+    const items = renderItems(data);
+    return (
+        <ul className="item-list list-group">
+            {items}
+        </ul>
+    );
+
+}*/
 //View -это какой-то аргумент,который будет приходить в виде компонента
 
 
- const withData=(View,getData)=>{
+/*const withData = (View, getData) => {
 return class extends Component{
 
     state={
         data:null,
         error:false
-    };
-    componentDidMount(){
-//функция гетдата приходит из аргумента функции , а входит туда из верхнего уровня
+    };*/
 
-getData()
-.then((data)=>{
-    this.setState({
-            data,
-            error:false
-        });
-})
-.catch((err)=>{
-    console.log(err)
-    this.setState({
-        data:null,
-        error:true})
-    });
-    }
-
-render(){
-    const{data,error} = this.state;
-
-    if(error){
-       return <ErrorMessage/>
-    }
-    if(!data){
+    if(!itemList){
     return <Spinner/>
     }
-    return <View {...this.props} data={data}/>
-}
-}
-}
+    const items = renderItems(itemList);
+    return (
+        <ul className="item-list list-group">
+            {items}
+        </ul>
+    );}
 
-const {getAllCharacters} = new gotService();
-export default withData(ItemList,getAllCharacters); //этот компонент итемЛист подставится вместо View при вызове функции
+export default ItemList; //этот компонент итемЛист подставится вместо View при вызове функции

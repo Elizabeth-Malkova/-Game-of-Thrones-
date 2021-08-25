@@ -7,7 +7,7 @@ import gotService from '../services/gotService';
 import {BrowserRouter as Router,Route} from 'react-router-dom';
 import {CharacterPage,BooksPage,HousesPage,BooksItem} from '../pages'
 
-import './app.css';
+
 
 
 export default class App extends Component {
