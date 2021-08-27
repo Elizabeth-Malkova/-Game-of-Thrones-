@@ -7,13 +7,15 @@ import ErrorMessage from '../errorMessage';
 function ItemList({getData,onItemSelected,renderItem}) {
 
     const[itemList, updateList]=useState([])
+    const[error,onError] = useState(false);
 
     useEffect(()=>{
         getData()
         .then((data)=>{
             updateList(data)// при помощи этой функции мы будем изменять наш стейт,который лежит в itemList 
         })
-        },[])//второй агрумент юзеффекта(итемлист) гласит,что если наш итемлист не изменился,то мы ничего делать не будем,но этот способ сработает,если в этом состоянии примитив(число,строка или булен)
+        .catch( () => onError(true))
+           },[])//второй агрумент юзеффекта(итемлист) гласит,что если наш итемлист не изменился,то мы ничего делать не будем,но этот способ сработает,если в этом состоянии примитив(число,строка или булен)
 //а если вторым аргументом предать пустой масив, это скажет хуку,что еффект нужно выполнить только при появлении компонента и его изчезновении
     function renderItems (arr) {
         return arr.map((item)=>{
@@ -30,30 +32,13 @@ function ItemList({getData,onItemSelected,renderItem}) {
         })
     }
 
-
-    /*const {data} = props
-    const items = renderItems(data);
-    return (
-        <ul className="item-list list-group">
-            {items}
-        </ul>
-    );
-
-}*/
-//View -это какой-то аргумент,который будет приходить в виде компонента
-
-
-/*const withData = (View, getData) => {
-return class extends Component{
-
-    state={
-        data:null,
-        error:false
-    };*/
-
+    if(error){
+        return <ErrorMessage/>
+    }
     if(!itemList){
     return <Spinner/>
     }
+
     const items = renderItems(itemList);
     return (
         <ul className="item-list list-group">

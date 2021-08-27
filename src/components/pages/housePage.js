@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ItemList from '../itemList';
-import CharDetails,{Field} from '../charDetails';
+import ItemDetails,{Field} from '../itemDetails';
 import RowBlock from '../rowBlock';
 import ErrorMessage from '../errorMessage';
 import gotService from '../services/gotService';
@@ -37,14 +37,14 @@ const itemList = (
 )
 
 const itemDetails = (
-    <CharDetails itemId={this.state.selectedHouse}
+    <ItemDetails itemId={this.state.selectedHouse}
         getData = {this.gotService.getHouse}>
 <Field field = 'region' label='Region'/>
 <Field field = 'words' label='Words'/>
 <Field field = 'titles' label='Titles'/>
 <Field field = 'overlord' label='Overlord'/>
 <Field field = 'ancestralWeapons' label='AncestralWeapons'/>
-    </CharDetails>
+    </ItemDetails>
 )
 
         return(

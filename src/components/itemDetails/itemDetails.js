@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react';
-import './charDetails.css';
+import './itemDetails.css';
 import Spinner from '../spinner';
 import ErrorMessage from '../errorMessage';
 
@@ -16,7 +16,7 @@ export{
     Field
 }
 
-export default function CharDetails ({itemId, getData, children}) {
+export default function ItemDetails ({itemId, getData, children}) {
 
     const[item,setItem] = useState(null);
     const[loading,onItemDetailsLoaded] = useState(true);
@@ -48,17 +48,12 @@ export default function CharDetails ({itemId, getData, children}) {
     })
     .catch( () => onError(true))
 }
-
-
-
        if (!item && error) {
             return <ErrorMessage/>
         } else if (!item) {
             return <span className="select-error">Please make your choice</span>
         }
-
         const {name} = item;
-
         if (loading) {
             return (
                 <div className="char-details rounded">
