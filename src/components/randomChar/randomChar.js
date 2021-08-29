@@ -1,62 +1,49 @@
-import React, {useState,Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import './randomChar.css';
 import Spinner from '../spinner';
 import ErrorMessage from '../errorMessage'
-import gotService from '../services/gotService';
-import PropTypes from 'prop-types';
+import GotService from '../services/gotService';
 
 export default function RandomChar() {
-
+    
     const[char,setChar] = useState({});
     const[loading,onCharLoaded] = useState(true);
     const[error,onError] = useState(false);
-
-        gotService=new gotService();
-
-        defaultProps={
-            interval:15000
-        }
     
-    componentDidMount=()=>{
-        updateChar()
-        timerId = setInterval(updateChar.props.interval)
-    }
-    
-    componentWillUnmount=()=>{
-        clearInterval(timerId)
-    }
-
-    updateChar=()=>{
+    const gotService = new GotService();
+    const updateChar=()=>{
            
-            const id=Math.floor(Math.random()*140+25);
-            gotService.getCharacter(id)//char -это полученные данные от сервера
-                    .then((char)=>{
-                        setChar(char)
-                        onCharLoaded(false)
-                      })  //когда заризолвится промис-вызовится функция onCharLoaded(колбек).т.е промис вызывает этот колбек с аргументом,того,что пришло из сервера
-                    .catch(()=>onError(true))//ловим сров
+        const id=Math.floor(Math.random()*140+25);
+        gotService.getCharacter(id)//char -это полученные данные от сервера
+        .then((char)=>{
+            setChar(char)
+            onCharLoaded(false)
+            })  //когда заризолвится промис-вызовится функция onCharLoaded(колбек).т.е промис вызывает этот колбек с аргументом,того,что пришло из сервера
+        .catch(()=>onError(true))//ловим сров
+    }
+
+    useEffect(() => {
+        if(Object.keys(char).length === 0){
+            updateChar()
         }
-    
-            const {char,loading,error}=this.state
-            const errorMessage = error ? <ErrorMessage/> : null
-            const spinner= loading ? <Spinner/> : null
-            const content= !(loading || error) ? <View char={char}/> : null
+        const timerId = setInterval(updateChar, 5000)
+        return () => {
+            clearInterval(timerId)
+        }
+    });
+
+    const errorMessage = error ? <ErrorMessage/> : null
+    const spinner= loading ? <Spinner/> : null
+    const content= !(loading || error) ? <View char={char}/> : null
         
-        return (
-                <div className="random-block rounded">
-                    {content}
-                    {spinner}
-                    {errorMessage}
-                </div>
-            );
+    return (
+        <div className="random-block rounded">
+            {content}
+            {spinner}
+            {errorMessage}
+        </div>
+    );
 }
-    RandomChar.defaultProps = {
-        interval: 15000
-    }
-    
-    RandomChar.propTypes={
-        interval: PropTypes.number
-    }
     
      const View=({char})=>{
          const{name,gender,born,died,culture}=char;
